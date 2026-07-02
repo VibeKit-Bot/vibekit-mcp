@@ -3,7 +3,8 @@
     "category": "Hosting & Apps",
     "name": "vibekit_list_apps",
     "title": "VibeKit List Apps",
-    "description": "List all hosted apps in your VibeKit account.",
+    "description": "List all hosted apps in your VibeKit account, each with its id, subdomain, status, and live URL. Start here to get an appId for the other app tools.",
+    "annotations": { "title": "VibeKit List Apps", "readOnlyHint": true, "idempotentHint": true },
     "inputSchema": {
       "type": "object",
       "properties": {}
@@ -13,13 +14,14 @@
     "category": "Hosting & Apps",
     "name": "vibekit_get_app",
     "title": "VibeKit Get App",
-    "description": "Get details about a specific hosted app.",
+    "description": "Get full details for one hosted app — status, subdomain/URL, repo, runtime, and database/domain config. Use the appId from vibekit_list_apps.",
+    "annotations": { "title": "VibeKit Get App", "readOnlyHint": true, "idempotentHint": true },
     "inputSchema": {
       "type": "object",
       "properties": {
         "appId": {
           "type": "string",
-          "description": "The app ID to get details for"
+          "description": "App ID (from vibekit_list_apps)"
         }
       },
       "required": [
@@ -31,17 +33,18 @@
     "category": "Hosting & Apps",
     "name": "vibekit_create_app",
     "title": "VibeKit Create App",
-    "description": "Create a new hosted app from a template.",
+    "description": "Create a new hosted app from a starter template and deploy it live at <subdomain>.vibekit.bot. Call vibekit_list_templates first to pick a valid template. To deploy existing code from a GitHub repo instead, use vibekit_deploy.",
+    "annotations": { "title": "VibeKit Create App", "readOnlyHint": false, "destructiveHint": false, "idempotentHint": false },
     "inputSchema": {
       "type": "object",
       "properties": {
         "template": {
           "type": "string",
-          "description": "Template to use (e.g., 'nextjs', 'react', 'express')"
+          "description": "Template id from vibekit_list_templates (e.g. 'landing', 'dashboard', 'blog', 'saas', 'crud-api')"
         },
         "subdomain": {
           "type": "string",
-          "description": "Subdomain for the app (will be deployed to {subdomain}.vibekit.bot)"
+          "description": "Desired subdomain — the app goes live at <subdomain>.vibekit.bot. Lowercase letters, numbers, and hyphens."
         }
       },
       "required": [
@@ -54,7 +57,8 @@
     "category": "Hosting & Apps",
     "name": "vibekit_list_templates",
     "title": "VibeKit List Templates",
-    "description": "List available templates for vibekit_create_app (e.g. landing, dashboard, blog, saas, crud-api).",
+    "description": "List the starter templates available to vibekit_create_app (e.g. landing, dashboard, blog, saas, crud-api). Call this before vibekit_create_app to choose a valid template.",
+    "annotations": { "title": "VibeKit List Templates", "readOnlyHint": true, "idempotentHint": true },
     "inputSchema": {
       "type": "object",
       "properties": {}
@@ -64,17 +68,18 @@
     "category": "Hosting & Apps",
     "name": "vibekit_deploy",
     "title": "VibeKit Deploy",
-    "description": "Deploy a GitHub repo to VibeKit hosting.",
+    "description": "Deploy a GitHub repo to VibeKit hosting, live at <subdomain>.vibekit.bot (Fargate container behind nginx, SSL automatic). Use when the code already lives in a GitHub repo; for a starter template instead use vibekit_create_app.",
+    "annotations": { "title": "VibeKit Deploy", "readOnlyHint": false, "destructiveHint": false, "idempotentHint": false },
     "inputSchema": {
       "type": "object",
       "properties": {
         "repo": {
           "type": "string",
-          "description": "GitHub repo in format 'owner/repo'"
+          "description": "GitHub repo as 'owner/repo' (e.g. '609NFT/vibekit')"
         },
         "subdomain": {
           "type": "string",
-          "description": "Subdomain for the app (will be deployed to {subdomain}.vibekit.bot)"
+          "description": "Desired subdomain — the app goes live at <subdomain>.vibekit.bot. Lowercase letters, numbers, and hyphens."
         }
       },
       "required": [
@@ -87,13 +92,14 @@
     "category": "Hosting & Apps",
     "name": "vibekit_redeploy",
     "title": "VibeKit Redeploy",
-    "description": "Redeploy an existing hosted app to update it with latest code.",
+    "description": "Redeploy an existing app to pull and ship the latest code. Use after pushing changes to the app's GitHub repo.",
+    "annotations": { "title": "VibeKit Redeploy", "readOnlyHint": false, "destructiveHint": false, "idempotentHint": false },
     "inputSchema": {
       "type": "object",
       "properties": {
         "appId": {
           "type": "string",
-          "description": "The app ID to redeploy"
+          "description": "App ID (from vibekit_list_apps)"
         }
       },
       "required": [
@@ -105,17 +111,18 @@
     "category": "Hosting & Apps",
     "name": "vibekit_app_logs",
     "title": "VibeKit App Logs",
-    "description": "Get application logs for debugging and monitoring.",
+    "description": "Fetch recent container/application logs for an app. Use this to debug crashes, errors, or a deploy that isn't serving.",
+    "annotations": { "title": "VibeKit App Logs", "readOnlyHint": true },
     "inputSchema": {
       "type": "object",
       "properties": {
         "appId": {
           "type": "string",
-          "description": "The app ID to get logs for"
+          "description": "App ID (from vibekit_list_apps)"
         },
         "lines": {
           "type": "number",
-          "description": "Number of log lines to retrieve (default: 100)"
+          "description": "Number of log lines to retrieve (default 100)"
         }
       },
       "required": [
@@ -127,13 +134,14 @@
     "category": "Hosting & Apps",
     "name": "vibekit_restart_app",
     "title": "VibeKit Restart App",
-    "description": "Restart a hosted app.",
+    "description": "Restart a hosted app's container. Use when an app is wedged, or to apply changed environment variables.",
+    "annotations": { "title": "VibeKit Restart App", "readOnlyHint": false, "destructiveHint": false, "idempotentHint": true },
     "inputSchema": {
       "type": "object",
       "properties": {
         "appId": {
           "type": "string",
-          "description": "The app ID to restart"
+          "description": "App ID (from vibekit_list_apps)"
         }
       },
       "required": [
@@ -145,13 +153,14 @@
     "category": "Hosting & Apps",
     "name": "vibekit_stop_app",
     "title": "VibeKit Stop App",
-    "description": "Stop a hosted app.",
+    "description": "Stop a hosted app's container. The app stays in your account and can be brought back with vibekit_start_app. Use to take an app offline without deleting it.",
+    "annotations": { "title": "VibeKit Stop App", "readOnlyHint": false, "destructiveHint": false, "idempotentHint": true },
     "inputSchema": {
       "type": "object",
       "properties": {
         "appId": {
           "type": "string",
-          "description": "The app ID to stop"
+          "description": "App ID (from vibekit_list_apps)"
         }
       },
       "required": [
@@ -163,13 +172,14 @@
     "category": "Hosting & Apps",
     "name": "vibekit_start_app",
     "title": "VibeKit Start App",
-    "description": "Start a stopped hosted app.",
+    "description": "Start a stopped hosted app's container. Use to bring an app stopped via vibekit_stop_app back online.",
+    "annotations": { "title": "VibeKit Start App", "readOnlyHint": false, "destructiveHint": false, "idempotentHint": true },
     "inputSchema": {
       "type": "object",
       "properties": {
         "appId": {
           "type": "string",
-          "description": "The app ID to start"
+          "description": "App ID (from vibekit_list_apps)"
         }
       },
       "required": [
@@ -181,13 +191,14 @@
     "category": "Hosting & Apps",
     "name": "vibekit_app_env",
     "title": "VibeKit Get Env Vars",
-    "description": "Get environment variables for a hosted app.",
+    "description": "Get the environment variables configured for an app (names and values). Read-only — use vibekit_set_env to change them.",
+    "annotations": { "title": "VibeKit Get Env Vars", "readOnlyHint": true, "idempotentHint": true },
     "inputSchema": {
       "type": "object",
       "properties": {
         "appId": {
           "type": "string",
-          "description": "The app ID to get environment variables for"
+          "description": "App ID (from vibekit_list_apps)"
         }
       },
       "required": [
@@ -199,17 +210,18 @@
     "category": "Hosting & Apps",
     "name": "vibekit_set_env",
     "title": "VibeKit Set Env Vars",
-    "description": "Set environment variables for a hosted app.",
+    "description": "Set or update environment variables for an app (merges with existing). The app must be restarted or redeployed for changes to take effect.",
+    "annotations": { "title": "VibeKit Set Env Vars", "readOnlyHint": false, "destructiveHint": false, "idempotentHint": true },
     "inputSchema": {
       "type": "object",
       "properties": {
         "appId": {
           "type": "string",
-          "description": "The app ID to set environment variables for"
+          "description": "App ID (from vibekit_list_apps)"
         },
         "vars": {
           "type": "object",
-          "description": "Object of key-value pairs to set as environment variables"
+          "description": "Key-value pairs to set as environment variables, e.g. { \"API_KEY\": \"...\", \"NODE_ENV\": \"production\" }"
         }
       },
       "required": [
@@ -222,13 +234,14 @@
     "category": "Hosting & Apps",
     "name": "vibekit_delete_app",
     "title": "VibeKit Delete App",
-    "description": "Delete a hosted app permanently.",
+    "description": "Permanently delete a hosted app — stops the container and removes its workspace, database, env vars, and subdomain. Irreversible (the GitHub repo is NOT touched). Confirm with the user before calling.",
+    "annotations": { "title": "VibeKit Delete App", "readOnlyHint": false, "destructiveHint": true, "idempotentHint": true },
     "inputSchema": {
       "type": "object",
       "properties": {
         "appId": {
           "type": "string",
-          "description": "The app ID to delete"
+          "description": "App ID (from vibekit_list_apps)"
         }
       },
       "required": [
@@ -240,17 +253,18 @@
     "category": "AI Agent",
     "name": "vibekit_chat",
     "title": "VibeKit Chat with Agent",
-    "description": "Chat with an app's AI agent. The agent can read, write, and modify the app's code.",
+    "description": "Send a message to an app's built-in AI coding agent, which reads, writes, and modifies the app's code and redeploys it. Use for 'build/make a change to my app' requests. If the agent finishes quickly you get its reply directly. Otherwise you get status:'working' — do NOT resend; instead give the user LIVE progress: poll vibekit_agent_status every few seconds and relay the current step from activity.status ('editing the homepage…', 'deploying…') until activity.done, then read vibekit_agent_history for the final reply.",
+    "annotations": { "title": "VibeKit Chat with Agent", "readOnlyHint": false, "destructiveHint": false, "openWorldHint": true },
     "inputSchema": {
       "type": "object",
       "properties": {
         "appId": {
           "type": "string",
-          "description": "The app ID to chat with the agent for"
+          "description": "App ID (from vibekit_list_apps)"
         },
         "message": {
           "type": "string",
-          "description": "Message to send to the AI agent"
+          "description": "What you want the agent to do or change — be specific about features, design, and behavior."
         }
       },
       "required": [
@@ -263,13 +277,14 @@
     "category": "AI Agent",
     "name": "vibekit_agent_status",
     "title": "VibeKit Agent Status",
-    "description": "Get the status of an app's AI agent.",
+    "description": "Check whether an app's AI agent is idle or working, and get its LIVE progress. Returns activity.status = the current human-readable build step (e.g. 'editing index.html', 'deploying'), activity.steps = the steps so far, and activity.done = whether the turn finished. Poll this every few seconds while a build is running and relay activity.status to the user so they see progress. Once activity.done is true the response also includes liveCheck = a server-side fetch of the deployed page ({ url, ok, httpStatus, title }); use it to confirm the app is live and renders — do NOT curl/fetch the URL yourself, your sandbox may block it.",
+    "annotations": { "title": "VibeKit Agent Status", "readOnlyHint": true },
     "inputSchema": {
       "type": "object",
       "properties": {
         "appId": {
           "type": "string",
-          "description": "The app ID to get agent status for"
+          "description": "App ID (from vibekit_list_apps)"
         }
       },
       "required": [
@@ -281,17 +296,18 @@
     "category": "AI Agent",
     "name": "vibekit_agent_history",
     "title": "VibeKit Agent History",
-    "description": "Get chat history with an app's AI agent.",
+    "description": "Get the recent chat history between the user and an app's AI agent.",
+    "annotations": { "title": "VibeKit Agent History", "readOnlyHint": true },
     "inputSchema": {
       "type": "object",
       "properties": {
         "appId": {
           "type": "string",
-          "description": "The app ID to get agent history for"
+          "description": "App ID (from vibekit_list_apps)"
         },
         "limit": {
           "type": "number",
-          "description": "Maximum number of messages to return (default: 20)"
+          "description": "Maximum number of messages to return (default 20)"
         }
       },
       "required": [
@@ -303,13 +319,14 @@
     "category": "Database",
     "name": "vibekit_enable_database",
     "title": "VibeKit Enable Database",
-    "description": "Enable database for a hosted app.",
+    "description": "Provision a Postgres database for an app (idempotent — safe if already enabled). Required before the vibekit_db_* tools work. Note: free-tier apps need the $3/mo Database add-on.",
+    "annotations": { "title": "VibeKit Enable Database", "readOnlyHint": false, "destructiveHint": false, "idempotentHint": true },
     "inputSchema": {
       "type": "object",
       "properties": {
         "appId": {
           "type": "string",
-          "description": "The app ID to enable database for"
+          "description": "App ID (from vibekit_list_apps)"
         }
       },
       "required": [
@@ -321,13 +338,14 @@
     "category": "Database",
     "name": "vibekit_database_status",
     "title": "VibeKit Database Status",
-    "description": "Get database status and connection info for an app.",
+    "description": "Get an app's database status and connection info (whether it's provisioned, frozen, etc.).",
+    "annotations": { "title": "VibeKit Database Status", "readOnlyHint": true, "idempotentHint": true },
     "inputSchema": {
       "type": "object",
       "properties": {
         "appId": {
           "type": "string",
-          "description": "The app ID to get database status for"
+          "description": "App ID (from vibekit_list_apps)"
         }
       },
       "required": [
@@ -339,13 +357,14 @@
     "category": "Database",
     "name": "vibekit_db_schema",
     "title": "VibeKit Database Schema",
-    "description": "Get the database schema for an app \u2014 all tables and their columns. Use this before writing a query.",
+    "description": "Get an app's database schema — every table and its columns. Always call this before writing a query with vibekit_db_query.",
+    "annotations": { "title": "VibeKit Database Schema", "readOnlyHint": true, "idempotentHint": true },
     "inputSchema": {
       "type": "object",
       "properties": {
         "appId": {
           "type": "string",
-          "description": "The app ID"
+          "description": "App ID (from vibekit_list_apps)"
         }
       },
       "required": [
@@ -357,17 +376,18 @@
     "category": "Database",
     "name": "vibekit_db_query",
     "title": "VibeKit Run SQL Query",
-    "description": "Run a SQL query against an app's Postgres database and return the result rows. Supports reads and writes. SQL string, max 5000 chars.",
+    "description": "Run a read-only SQL query against an app's Postgres database and return up to 200 result rows. SELECT only — writes and DDL (INSERT/UPDATE/DELETE/ALTER/DROP/…) are rejected server-side; use vibekit_chat or vibekit_submit_task to have the agent make data or schema changes. Call vibekit_db_schema first to learn the tables. SQL string, max 5000 chars.",
+    "annotations": { "title": "VibeKit Run SQL Query", "readOnlyHint": true, "idempotentHint": true },
     "inputSchema": {
       "type": "object",
       "properties": {
         "appId": {
           "type": "string",
-          "description": "The app ID"
+          "description": "App ID (from vibekit_list_apps)"
         },
         "sql": {
           "type": "string",
-          "description": "SQL to execute (max 5000 chars)"
+          "description": "SQL to execute (max 5000 chars). Reads and writes both allowed."
         }
       },
       "required": [
@@ -380,17 +400,18 @@
     "category": "Database",
     "name": "vibekit_db_table",
     "title": "VibeKit Browse Table",
-    "description": "Browse rows in a specific database table, with pagination and optional sorting.",
+    "description": "Browse rows of one table with pagination and optional sorting — a quick read-only alternative to hand-writing a SELECT.",
+    "annotations": { "title": "VibeKit Browse Table", "readOnlyHint": true, "idempotentHint": true },
     "inputSchema": {
       "type": "object",
       "properties": {
         "appId": {
           "type": "string",
-          "description": "The app ID"
+          "description": "App ID (from vibekit_list_apps)"
         },
         "table": {
           "type": "string",
-          "description": "Table name"
+          "description": "Table name (see vibekit_db_schema)"
         },
         "limit": {
           "type": "number",
@@ -411,13 +432,14 @@
     "category": "Hosting & Apps",
     "name": "vibekit_list_deploys",
     "title": "VibeKit List Deploys",
-    "description": "List recent deploys for an app, most recent first, with their status and commit info. Find a deploy ID here to roll back to.",
+    "description": "List an app's recent deploys, newest first, with status and commit info. Find a deployId here to pass to vibekit_rollback_deploy.",
+    "annotations": { "title": "VibeKit List Deploys", "readOnlyHint": true, "idempotentHint": true },
     "inputSchema": {
       "type": "object",
       "properties": {
         "appId": {
           "type": "string",
-          "description": "The app ID"
+          "description": "App ID (from vibekit_list_apps)"
         },
         "limit": {
           "type": "number",
@@ -433,17 +455,18 @@
     "category": "Hosting & Apps",
     "name": "vibekit_rollback_deploy",
     "title": "VibeKit Rollback Deploy",
-    "description": "Roll an app back to a previous deploy. Get the deploy ID from vibekit_list_deploys. The container restarts on the rolled-back build.",
+    "description": "Roll an app back to a previous deploy (get the deployId from vibekit_list_deploys). The container restarts on the rolled-back build; reversible by rolling forward again.",
+    "annotations": { "title": "VibeKit Rollback Deploy", "readOnlyHint": false, "destructiveHint": false, "idempotentHint": true },
     "inputSchema": {
       "type": "object",
       "properties": {
         "appId": {
           "type": "string",
-          "description": "The app ID"
+          "description": "App ID (from vibekit_list_apps)"
         },
         "deployId": {
           "type": "string",
-          "description": "The deploy ID to roll back to (from vibekit_list_deploys)"
+          "description": "Deploy ID to roll back to (from vibekit_list_deploys)"
         }
       },
       "required": [
@@ -456,13 +479,14 @@
     "category": "QA",
     "name": "vibekit_run_qa",
     "title": "VibeKit Run QA",
-    "description": "Run automated QA tests on a hosted app.",
+    "description": "Kick off an automated QA run (headless-browser checks) against a hosted app. Poll vibekit_qa_status for results.",
+    "annotations": { "title": "VibeKit Run QA", "readOnlyHint": false, "destructiveHint": false },
     "inputSchema": {
       "type": "object",
       "properties": {
         "appId": {
           "type": "string",
-          "description": "The app ID to run QA tests for"
+          "description": "App ID (from vibekit_list_apps)"
         }
       },
       "required": [
@@ -474,13 +498,14 @@
     "category": "QA",
     "name": "vibekit_qa_status",
     "title": "VibeKit QA Status",
-    "description": "Get QA test results and status for an app.",
+    "description": "Get the latest automated QA results and status for an app.",
+    "annotations": { "title": "VibeKit QA Status", "readOnlyHint": true },
     "inputSchema": {
       "type": "object",
       "properties": {
         "appId": {
           "type": "string",
-          "description": "The app ID to get QA status for"
+          "description": "App ID (from vibekit_list_apps)"
         }
       },
       "required": [
@@ -492,7 +517,8 @@
     "category": "Tasks",
     "name": "vibekit_submit_task",
     "title": "VibeKit Submit Task",
-    "description": "Submit a coding task to VibeKit. The AI will write code, commit to GitHub, and deploy to {subdomain}.vibekit.bot. Returns a task ID to poll for results.",
+    "description": "Submit an autonomous coding task. The AI writes the code, commits to GitHub, and (by default) deploys to <subdomain>.vibekit.bot. Returns a taskId — poll vibekit_get_task or block with vibekit_wait_for_task. Use for 'build X' or 'change X' work against a repo.",
+    "annotations": { "title": "VibeKit Submit Task", "readOnlyHint": false, "destructiveHint": false, "openWorldHint": true },
     "inputSchema": {
       "type": "object",
       "properties": {
@@ -502,19 +528,19 @@
         },
         "repo": {
           "type": "string",
-          "description": "GitHub repo in format 'owner/repo'. Optional \u2014 will use user's current repo if not specified."
+          "description": "GitHub repo as 'owner/repo'. Optional — uses the user's current repo if omitted."
         },
         "branch": {
           "type": "string",
-          "description": "Git branch to work on. Default: main"
+          "description": "Git branch to work on (default 'main')"
         },
         "deploy": {
           "type": "boolean",
-          "description": "Auto-deploy to Vercel when done. Default: true"
+          "description": "Auto-deploy to <subdomain>.vibekit.bot when done (default true)"
         },
         "callbackUrl": {
           "type": "string",
-          "description": "Webhook URL to receive task completion notification."
+          "description": "Optional webhook URL to receive a task-completion notification."
         }
       },
       "required": [
@@ -526,13 +552,14 @@
     "category": "Tasks",
     "name": "vibekit_get_task",
     "title": "VibeKit Get Task",
-    "description": "Get the status and result of a previously submitted task.",
+    "description": "Get the status and result of a task submitted via vibekit_submit_task.",
+    "annotations": { "title": "VibeKit Get Task", "readOnlyHint": true },
     "inputSchema": {
       "type": "object",
       "properties": {
         "taskId": {
           "type": "string",
-          "description": "The task ID returned from vibekit_submit_task"
+          "description": "Task ID returned from vibekit_submit_task"
         }
       },
       "required": [
@@ -544,13 +571,14 @@
     "category": "Tasks",
     "name": "vibekit_list_tasks",
     "title": "VibeKit List Tasks",
-    "description": "List recent tasks submitted to VibeKit.",
+    "description": "List recent coding tasks, optionally filtered by status.",
+    "annotations": { "title": "VibeKit List Tasks", "readOnlyHint": true, "idempotentHint": true },
     "inputSchema": {
       "type": "object",
       "properties": {
         "limit": {
           "type": "number",
-          "description": "Max number of tasks to return. Default: 10"
+          "description": "Max number of tasks to return (default 10)"
         },
         "status": {
           "type": "string",
@@ -560,7 +588,7 @@
             "completed",
             "failed"
           ],
-          "description": "Filter by status"
+          "description": "Filter by task status"
         }
       }
     }
@@ -569,17 +597,18 @@
     "category": "Tasks",
     "name": "vibekit_wait_for_task",
     "title": "VibeKit Wait for Task",
-    "description": "Wait for a task to complete and return the result. Polls every 5 seconds up to the timeout.",
+    "description": "Block until a submitted task finishes (or the timeout), polling every 5 seconds, then return its result. Use right after vibekit_submit_task when you want the final result inline.",
+    "annotations": { "title": "VibeKit Wait for Task", "readOnlyHint": true },
     "inputSchema": {
       "type": "object",
       "properties": {
         "taskId": {
           "type": "string",
-          "description": "The task ID to wait for"
+          "description": "Task ID to wait for (from vibekit_submit_task)"
         },
         "timeoutSeconds": {
           "type": "number",
-          "description": "Max seconds to wait. Default: 300 (5 minutes)"
+          "description": "Max seconds to wait (default 300; the remote connector caps this at 120)"
         }
       },
       "required": [
@@ -591,13 +620,14 @@
     "category": "Tasks",
     "name": "vibekit_cancel_task",
     "title": "VibeKit Cancel Task",
-    "description": "Cancel a running task by ID. No-op for tasks that have already completed.",
+    "description": "Cancel a running task by taskId. No-op if it has already finished.",
+    "annotations": { "title": "VibeKit Cancel Task", "readOnlyHint": false, "destructiveHint": false, "idempotentHint": true },
     "inputSchema": {
       "type": "object",
       "properties": {
         "taskId": {
           "type": "string",
-          "description": "The task ID to cancel"
+          "description": "Task ID to cancel (from vibekit_submit_task)"
         }
       },
       "required": [
@@ -609,25 +639,26 @@
     "category": "Schedules",
     "name": "vibekit_create_schedule",
     "title": "VibeKit Create Schedule",
-    "description": "Create a scheduled recurring task. The AI will run this task automatically on the specified schedule.",
+    "description": "Create a recurring coding task that the AI runs automatically on a cron schedule (e.g. a weekly SEO pass). Use for 'every Monday, do X to my repo' requests.",
+    "annotations": { "title": "VibeKit Create Schedule", "readOnlyHint": false, "destructiveHint": false, "idempotentHint": false },
     "inputSchema": {
       "type": "object",
       "properties": {
         "task": {
           "type": "string",
-          "description": "What to do on each run. e.g., 'Improve SEO and page speed'"
+          "description": "What to do on each run, e.g. 'Improve SEO and page speed'"
         },
         "repo": {
           "type": "string",
-          "description": "GitHub repo in format 'owner/repo'"
+          "description": "GitHub repo as 'owner/repo'"
         },
         "cron": {
           "type": "string",
-          "description": "Cron expression. e.g., '0 9 * * 1' for every Monday at 9am UTC"
+          "description": "Cron expression, e.g. '0 9 * * 1' for every Monday at 9am UTC"
         },
         "name": {
           "type": "string",
-          "description": "Friendly name for the schedule"
+          "description": "Friendly name for the schedule (optional)"
         }
       },
       "required": [
@@ -641,7 +672,8 @@
     "category": "Schedules",
     "name": "vibekit_list_schedules",
     "title": "VibeKit List Schedules",
-    "description": "List all scheduled tasks.",
+    "description": "List all of the account's scheduled recurring tasks.",
+    "annotations": { "title": "VibeKit List Schedules", "readOnlyHint": true, "idempotentHint": true },
     "inputSchema": {
       "type": "object",
       "properties": {}
@@ -651,13 +683,14 @@
     "category": "Schedules",
     "name": "vibekit_delete_schedule",
     "title": "VibeKit Delete Schedule",
-    "description": "Delete a scheduled task.",
+    "description": "Delete a scheduled recurring task by scheduleId. Confirm with the user first.",
+    "annotations": { "title": "VibeKit Delete Schedule", "readOnlyHint": false, "destructiveHint": true, "idempotentHint": true },
     "inputSchema": {
       "type": "object",
       "properties": {
         "scheduleId": {
           "type": "string",
-          "description": "The schedule ID to delete"
+          "description": "Schedule ID to delete (from vibekit_list_schedules)"
         }
       },
       "required": [
@@ -669,7 +702,8 @@
     "category": "Account",
     "name": "vibekit_account",
     "title": "VibeKit Account Info",
-    "description": "Get VibeKit account info including plan, credits balance, and usage.",
+    "description": "Get VibeKit account info: plan, credit balance, and usage.",
+    "annotations": { "title": "VibeKit Account Info", "readOnlyHint": true, "idempotentHint": true },
     "inputSchema": {
       "type": "object",
       "properties": {}
@@ -679,13 +713,14 @@
     "category": "Skills",
     "name": "vibekit_list_skills",
     "title": "VibeKit List Skills",
-    "description": "List all available implementation skills. Returns skill IDs, names, descriptions, and tags. Use this to discover what skills are available before fetching specific ones.",
+    "description": "List available implementation skills (IDs, names, descriptions, tags) from the VibeKit skills registry. Discover skills here before fetching one with vibekit_get_skill.",
+    "annotations": { "title": "VibeKit List Skills", "readOnlyHint": true, "openWorldHint": true },
     "inputSchema": {
       "type": "object",
       "properties": {
         "tag": {
           "type": "string",
-          "description": "Filter skills by tag (e.g., 'react', 'database', 'security')"
+          "description": "Filter skills by tag (e.g. 'react', 'database', 'security')"
         }
       }
     }
@@ -694,13 +729,14 @@
     "category": "Skills",
     "name": "vibekit_get_skill",
     "title": "VibeKit Get Skill",
-    "description": "Fetch the full content of a specific skill. Skills contain implementation patterns, code examples, and best practices for a domain. Fetch skills on-demand when you need guidance on a specific topic.",
+    "description": "Fetch the full content of a specific skill — implementation patterns, code examples, and best practices for a domain. Fetch on-demand when you need guidance on a specific topic.",
+    "annotations": { "title": "VibeKit Get Skill", "readOnlyHint": true, "openWorldHint": true },
     "inputSchema": {
       "type": "object",
       "properties": {
         "id": {
           "type": "string",
-          "description": "Skill ID from vibekit_list_skills (e.g., 'nextjs', 'trpc', 'auth')"
+          "description": "Skill ID from vibekit_list_skills (e.g. 'nextjs', 'trpc', 'auth')"
         }
       },
       "required": [

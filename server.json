@@ -14,7 +14,7 @@
       "registryType": "npm",
       "registryBaseUrl": "https://registry.npmjs.org",
       "identifier": "vibekit-mcp",
-      "version": "0.7.1",
+      "version": "0.7.2",
       "transport": {
         "type": "stdio"
       },
@@ -35,7 +35,7 @@
       "headers": [
         {
           "name": "Authorization",
-          "description": "Bearer vk_... — your VibeKit API key. Get one from the VibeKit bot on Telegram with /apikey. (Clients that can't set headers may instead append ?api_key=vk_... to the URL.)",
+          "description": "Bearer vk_... \u2014 your VibeKit API key. Get one from the VibeKit bot on Telegram with /apikey. (Clients that can't set headers may instead append ?api_key=vk_... to the URL.)",
           "isRequired": true,
           "isSecret": true
         }
