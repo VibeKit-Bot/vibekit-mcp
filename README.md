@@ -135,4 +135,4 @@ Once configured, you can use prompts like:
 - [VibeKit Website](https://vibekit.bot)
 - [API Documentation](https://vibekit.bot/SKILL.md)
 - [Get API Key](https://t.me/the_vibe_kit_bot)
-- [GitHub](https://github.com/609NFT/vibekit)
+- [GitHub](https://github.com/VibeKit-Bot/vibekit-mcp)
