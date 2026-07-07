@@ -15,6 +15,9 @@ const SKILLS_REGISTRY = "https://raw.githubusercontent.com/vibekit-apps/skills-r
 // Skills cache (TTL: 5 minutes)
 let skillsCache: { manifest: unknown; fetchedAt: number } | null = null;
 const CACHE_TTL = 5 * 60 * 1000;
+// Max time vibekit_chat blocks before returning a "still working — poll" result,
+// so a long coding turn never outlasts the client timeout and triggers a retry.
+const CHAT_MAX_WAIT_MS = 110_000;
 
 // API helper
 async function apiRequest(
@@ -64,13 +67,31 @@ import { join } from "path";
 
 const TOOLS_MANIFEST_PATH = join(__dirname, "..", "tools.json");
 const tools: Tool[] = JSON.parse(readFileSync(TOOLS_MANIFEST_PATH, "utf8")).map(
-  (t: { name: string; title?: string; description: string; inputSchema: Tool["inputSchema"] }): Tool => ({
+  (t: { name: string; title?: string; description: string; inputSchema: Tool["inputSchema"]; annotations?: Tool["annotations"] }): Tool => ({
     name: t.name,
     title: t.title,
     description: t.description,
     inputSchema: t.inputSchema,
+    annotations: t.annotations,
   })
 );
+
+// Server-level guidance sent in the MCP `initialize` response. Tells the model
+// what VibeKit is and when to reach for these tools — the single strongest
+// signal (after tool descriptions) for tool selection. Keep in sync with the
+// same string in src/routes/mcp.ts (the remote HTTP server).
+const SERVER_INSTRUCTIONS =
+  "VibeKit hosts, deploys, and operates web apps and AI coding agents. Each app runs in its own " +
+  "container at <subdomain>.vibekit.bot with optional Postgres, logs, env vars, and automated QA, " +
+  "plus a built-in AI agent that can edit the app's code.\n\n" +
+  "Use these tools whenever the user wants to: deploy a GitHub repo or starter template and get a " +
+  "live URL; list, inspect, restart/stop/start, or delete hosted apps; read logs to debug; manage " +
+  "env vars; enable and query an app's Postgres (call vibekit_db_schema before writing SQL); list " +
+  "or roll back deploys; run or check QA; chat with an app's AI agent to change its code; or " +
+  "submit/schedule autonomous coding tasks that commit to GitHub and deploy.\n\n" +
+  "Most tools key off an appId — call vibekit_list_apps first to resolve one. Confirm destructive " +
+  "actions (vibekit_delete_app, vibekit_delete_schedule, and write/DDL via vibekit_db_query) with " +
+  "the user before calling. Auth uses a VibeKit API key (vk_...) from the Telegram bot's /apikey command.";
 
 // Tool handlers
 async function handleTool(
@@ -149,11 +170,30 @@ async function handleTool(
       break;
 
     // AI Agent
-    case "vibekit_chat":
-      result = await apiRequest("POST", `/hosting/app/${args.appId}/agent`, {
+    case "vibekit_chat": {
+      // The /agent endpoint runs the whole coding turn synchronously, which can
+      // outlast the MCP client's idle timeout → the client retries, producing a
+      // duplicate message and losing the reply. Disconnect doesn't abort the run
+      // server-side, so we race the call against a bounded wait and, on timeout,
+      // return a SUCCESS "still working — poll" result (never an error, so no
+      // retry/dupe). The loopback call is NOT aborted; the turn lands in history.
+      const callP = apiRequest("POST", `/hosting/app/${args.appId}/agent`, {
         message: args.message,
       });
+      callP.catch(() => {});
+      const pollP = new Promise<typeof result>((resolve) =>
+        setTimeout(() => resolve({
+          ok: true,
+          data: {
+            status: "working",
+            appId: args.appId,
+            note: "Your message was delivered and the agent is still working on it — coding turns can take a few minutes. Do NOT resend the same message. Poll vibekit_agent_status until it's idle, then vibekit_agent_history to read the agent's reply.",
+          },
+        }), CHAT_MAX_WAIT_MS),
+      );
+      result = await Promise.race([callP, pollP]);
       break;
+    }
 
     case "vibekit_agent_status":
       result = await apiRequest("GET", `/hosting/app/${args.appId}/agent/status`);
@@ -367,12 +407,13 @@ const server = new Server(
   {
     name: "vibekit-mcp",
     title: "VibeKit",
-    version: "0.7.1",
+    version: "0.7.2",
   },
   {
     capabilities: {
       tools: {},
     },
+    instructions: SERVER_INSTRUCTIONS,
   }
 );
 
