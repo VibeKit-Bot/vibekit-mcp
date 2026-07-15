@@ -1,6 +1,6 @@
 {
   "$schema": "https://static.modelcontextprotocol.io/schemas/2025-12-11/server.schema.json",
-  "name": "io.github.609NFT/vibekit-mcp",
+  "name": "io.github.VibeKit-Bot/vibekit-mcp",
   "title": "VibeKit",
   "description": "Build, deploy, and operate hosted web apps on VibeKit (vibekit.bot) from any MCP client.",
   "version": "0.7.4",
