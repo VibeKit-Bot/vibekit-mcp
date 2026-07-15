@@ -2,7 +2,7 @@
   "$schema": "https://static.modelcontextprotocol.io/schemas/2025-12-11/server.schema.json",
   "name": "io.github.vibekit-bot/vibekit-mcp",
   "title": "VibeKit",
-  "description": "Build, deploy, and operate hosted web apps from any MCP client. VibeKit (vibekit.bot) runs each app in its own container with logs, env vars, Postgres, and automated QA, plus an AI coding agent per app you can chat with to change its code.",
+  "description": "Build, deploy, and operate hosted web apps on VibeKit (vibekit.bot) from any MCP client.",
   "version": "0.7.4",
   "websiteUrl": "https://vibekit.bot",
   "repository": {
