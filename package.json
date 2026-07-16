@@ -1,7 +1,7 @@
 {
   "name": "vibekit-mcp",
-  "version": "0.7.4",
-  "description": "MCP server for VibeKit — deploy apps, manage hosting, chat with AI agents, and run coding tasks from Claude Desktop, Cursor, and other MCP clients.",
+  "version": "0.7.5",
+  "description": "MCP server for VibeKit \u2014 deploy apps, manage hosting, chat with AI agents, and run coding tasks from Claude Desktop, Cursor, and other MCP clients.",
   "main": "dist/index.js",
   "bin": {
     "vibekit-mcp": "./dist/index.js"
