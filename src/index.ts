@@ -9,6 +9,7 @@ import {
 } from "@modelcontextprotocol/sdk/types.js";
 
 const API_BASE = process.env.VIBEKIT_API_URL || "https://vibekit.bot/api/v1";
+const VERSION = "0.7.5";
 const API_KEY = process.env.VIBEKIT_API_KEY || "";
 const SKILLS_REGISTRY = "https://raw.githubusercontent.com/vibekit-apps/skills-registry/main";
 
@@ -40,6 +41,9 @@ async function apiRequest(
       headers: {
         "Authorization": `Bearer ${API_KEY}`,
         "Content-Type": "application/json",
+        // Lets the backend attribute this traffic to MCP (per-user usage
+        // stats) — keep the "vibekit-mcp" prefix, the server matches on it.
+        "X-VibeKit-Client": `vibekit-mcp/${VERSION}`,
       },
       body: body ? JSON.stringify(body) : undefined,
     });
@@ -407,7 +411,7 @@ const server = new Server(
   {
     name: "vibekit-mcp",
     title: "VibeKit",
-    version: "0.7.2",
+    version: VERSION,
   },
   {
     capabilities: {
