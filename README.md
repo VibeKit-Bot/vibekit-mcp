@@ -1,5 +1,7 @@
 # vibekit-mcp
 
+[![smithery badge](https://smithery.ai/badge/vibekit/vibekit-mcp)](https://smithery.ai/servers/vibekit/vibekit-mcp)
+
 MCP server for VibeKit, deploy apps, manage hosting, and chat with AI agents from any MCP client.
 
 This package is for **VibeKit cloud/API access**. It does **not** connect your local Claude Code instance to Telegram. For local-machine remote control, use `vibekit-agent`.
