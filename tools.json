@@ -75,7 +75,7 @@
       "properties": {
         "repo": {
           "type": "string",
-          "description": "GitHub repo as 'owner/repo' (e.g. '609NFT/vibekit')"
+          "description": "GitHub repo as 'owner/repo' (e.g. 'your-username/my-app')"
         },
         "subdomain": {
           "type": "string",
