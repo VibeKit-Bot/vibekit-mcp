@@ -67,11 +67,12 @@ import { join } from "path";
 
 const TOOLS_MANIFEST_PATH = join(__dirname, "..", "tools.json");
 const tools: Tool[] = JSON.parse(readFileSync(TOOLS_MANIFEST_PATH, "utf8")).map(
-  (t: { name: string; title?: string; description: string; inputSchema: Tool["inputSchema"]; annotations?: Tool["annotations"] }): Tool => ({
+  (t: { name: string; title?: string; description: string; inputSchema: Tool["inputSchema"]; outputSchema?: Tool["outputSchema"]; annotations?: Tool["annotations"] }): Tool => ({
     name: t.name,
     title: t.title,
     description: t.description,
     inputSchema: t.inputSchema,
+    outputSchema: t.outputSchema,
     annotations: t.annotations,
   })
 );
@@ -97,7 +98,11 @@ const SERVER_INSTRUCTIONS =
 async function handleTool(
   name: string,
   args: Record<string, unknown>
-): Promise<{ content: Array<{ type: "text"; text: string }> }> {
+): Promise<{
+  content: Array<{ type: "text"; text: string }>;
+  structuredContent: Record<string, unknown>;
+  isError?: boolean;
+}> {
   let result: { ok: boolean; data?: unknown; error?: string };
 
   switch (name) {
@@ -399,15 +404,29 @@ async function handleTool(
     ? JSON.stringify(result.data, null, 2)
     : `Error: ${result.error}`;
 
-  return { content: [{ type: "text", text }] };
+  // structuredContent mirrors each tool's declared outputSchema envelope:
+  // { ok, data?, error? }. Text content is kept for clients that don't
+  // consume structured results.
+  const structuredContent: Record<string, unknown> = result.ok
+    ? { ok: true, data: result.data }
+    : { ok: false, error: result.error };
+
+  return {
+    content: [{ type: "text", text }],
+    structuredContent,
+    ...(result.ok ? {} : { isError: true }),
+  };
 }
 
 // Main server setup
+const PKG_VERSION: string = JSON.parse(
+  readFileSync(join(__dirname, "..", "package.json"), "utf8")
+).version;
 const server = new Server(
   {
     name: "vibekit-mcp",
     title: "VibeKit",
-    version: "0.7.2",
+    version: PKG_VERSION,
   },
   {
     capabilities: {

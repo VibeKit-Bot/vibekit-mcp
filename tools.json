@@ -4,10 +4,34 @@
     "name": "vibekit_list_apps",
     "title": "VibeKit List Apps",
     "description": "List all hosted apps in your VibeKit account, each with its id, subdomain, status, and live URL. Start here to get an appId for the other app tools.",
-    "annotations": { "title": "VibeKit List Apps", "readOnlyHint": true, "idempotentHint": true },
+    "annotations": {
+      "title": "VibeKit List Apps",
+      "readOnlyHint": true,
+      "idempotentHint": true
+    },
     "inputSchema": {
       "type": "object",
       "properties": {}
+    },
+    "outputSchema": {
+      "type": "object",
+      "description": "Result envelope: ok=true with data on success, ok=false with error on failure.",
+      "properties": {
+        "ok": {
+          "type": "boolean",
+          "description": "Whether the call succeeded."
+        },
+        "data": {
+          "description": "Array of hosted apps, each with id, subdomain, status, and live URL."
+        },
+        "error": {
+          "type": "string",
+          "description": "Error message when ok is false (e.g. missing/invalid VIBEKIT_API_KEY, or an API error)."
+        }
+      },
+      "required": [
+        "ok"
+      ]
     }
   },
   {
@@ -15,7 +39,11 @@
     "name": "vibekit_get_app",
     "title": "VibeKit Get App",
     "description": "Get full details for one hosted app — status, subdomain/URL, repo, runtime, and database/domain config. Use the appId from vibekit_list_apps.",
-    "annotations": { "title": "VibeKit Get App", "readOnlyHint": true, "idempotentHint": true },
+    "annotations": {
+      "title": "VibeKit Get App",
+      "readOnlyHint": true,
+      "idempotentHint": true
+    },
     "inputSchema": {
       "type": "object",
       "properties": {
@@ -27,6 +55,26 @@
       "required": [
         "appId"
       ]
+    },
+    "outputSchema": {
+      "type": "object",
+      "description": "Result envelope: ok=true with data on success, ok=false with error on failure.",
+      "properties": {
+        "ok": {
+          "type": "boolean",
+          "description": "Whether the call succeeded."
+        },
+        "data": {
+          "description": "App details: subdomain, status, live URL, container stats, and infrastructure topology."
+        },
+        "error": {
+          "type": "string",
+          "description": "Error message when ok is false (e.g. missing/invalid VIBEKIT_API_KEY, or an API error)."
+        }
+      },
+      "required": [
+        "ok"
+      ]
     }
   },
   {
@@ -34,7 +82,12 @@
     "name": "vibekit_create_app",
     "title": "VibeKit Create App",
     "description": "Create a new hosted app from a starter template and deploy it live at <subdomain>.vibekit.bot. Call vibekit_list_templates first to pick a valid template. To deploy existing code from a GitHub repo instead, use vibekit_deploy.",
-    "annotations": { "title": "VibeKit Create App", "readOnlyHint": false, "destructiveHint": false, "idempotentHint": false },
+    "annotations": {
+      "title": "VibeKit Create App",
+      "readOnlyHint": false,
+      "destructiveHint": false,
+      "idempotentHint": false
+    },
     "inputSchema": {
       "type": "object",
       "properties": {
@@ -51,6 +104,26 @@
         "template",
         "subdomain"
       ]
+    },
+    "outputSchema": {
+      "type": "object",
+      "description": "Result envelope: ok=true with data on success, ok=false with error on failure.",
+      "properties": {
+        "ok": {
+          "type": "boolean",
+          "description": "Whether the call succeeded."
+        },
+        "data": {
+          "description": "The created app: appId, subdomain, live URL, and initial deploy status."
+        },
+        "error": {
+          "type": "string",
+          "description": "Error message when ok is false (e.g. missing/invalid VIBEKIT_API_KEY, or an API error)."
+        }
+      },
+      "required": [
+        "ok"
+      ]
     }
   },
   {
@@ -58,10 +131,34 @@
     "name": "vibekit_list_templates",
     "title": "VibeKit List Templates",
     "description": "List the starter templates available to vibekit_create_app (e.g. landing, dashboard, blog, saas, crud-api). Call this before vibekit_create_app to choose a valid template.",
-    "annotations": { "title": "VibeKit List Templates", "readOnlyHint": true, "idempotentHint": true },
+    "annotations": {
+      "title": "VibeKit List Templates",
+      "readOnlyHint": true,
+      "idempotentHint": true
+    },
     "inputSchema": {
       "type": "object",
       "properties": {}
+    },
+    "outputSchema": {
+      "type": "object",
+      "description": "Result envelope: ok=true with data on success, ok=false with error on failure.",
+      "properties": {
+        "ok": {
+          "type": "boolean",
+          "description": "Whether the call succeeded."
+        },
+        "data": {
+          "description": "Array of starter templates with name and description."
+        },
+        "error": {
+          "type": "string",
+          "description": "Error message when ok is false (e.g. missing/invalid VIBEKIT_API_KEY, or an API error)."
+        }
+      },
+      "required": [
+        "ok"
+      ]
     }
   },
   {
@@ -69,7 +166,12 @@
     "name": "vibekit_deploy",
     "title": "VibeKit Deploy",
     "description": "Deploy a GitHub repo to VibeKit hosting, live at <subdomain>.vibekit.bot (Fargate container behind nginx, SSL automatic). Use when the code already lives in a GitHub repo; for a starter template instead use vibekit_create_app.",
-    "annotations": { "title": "VibeKit Deploy", "readOnlyHint": false, "destructiveHint": false, "idempotentHint": false },
+    "annotations": {
+      "title": "VibeKit Deploy",
+      "readOnlyHint": false,
+      "destructiveHint": false,
+      "idempotentHint": false
+    },
     "inputSchema": {
       "type": "object",
       "properties": {
@@ -86,6 +188,26 @@
         "repo",
         "subdomain"
       ]
+    },
+    "outputSchema": {
+      "type": "object",
+      "description": "Result envelope: ok=true with data on success, ok=false with error on failure.",
+      "properties": {
+        "ok": {
+          "type": "boolean",
+          "description": "Whether the call succeeded."
+        },
+        "data": {
+          "description": "Deploy result: deployUrl (https://<subdomain>.vibekit.bot) and appId."
+        },
+        "error": {
+          "type": "string",
+          "description": "Error message when ok is false (e.g. missing/invalid VIBEKIT_API_KEY, or an API error)."
+        }
+      },
+      "required": [
+        "ok"
+      ]
     }
   },
   {
@@ -93,7 +215,12 @@
     "name": "vibekit_redeploy",
     "title": "VibeKit Redeploy",
     "description": "Redeploy an existing app to pull and ship the latest code. Use after pushing changes to the app's GitHub repo.",
-    "annotations": { "title": "VibeKit Redeploy", "readOnlyHint": false, "destructiveHint": false, "idempotentHint": false },
+    "annotations": {
+      "title": "VibeKit Redeploy",
+      "readOnlyHint": false,
+      "destructiveHint": false,
+      "idempotentHint": false
+    },
     "inputSchema": {
       "type": "object",
       "properties": {
@@ -105,6 +232,26 @@
       "required": [
         "appId"
       ]
+    },
+    "outputSchema": {
+      "type": "object",
+      "description": "Result envelope: ok=true with data on success, ok=false with error on failure.",
+      "properties": {
+        "ok": {
+          "type": "boolean",
+          "description": "Whether the call succeeded."
+        },
+        "data": {
+          "description": "Redeploy confirmation with deploy/task status."
+        },
+        "error": {
+          "type": "string",
+          "description": "Error message when ok is false (e.g. missing/invalid VIBEKIT_API_KEY, or an API error)."
+        }
+      },
+      "required": [
+        "ok"
+      ]
     }
   },
   {
@@ -112,7 +259,10 @@
     "name": "vibekit_app_logs",
     "title": "VibeKit App Logs",
     "description": "Fetch recent container/application logs for an app. Use this to debug crashes, errors, or a deploy that isn't serving.",
-    "annotations": { "title": "VibeKit App Logs", "readOnlyHint": true },
+    "annotations": {
+      "title": "VibeKit App Logs",
+      "readOnlyHint": true
+    },
     "inputSchema": {
       "type": "object",
       "properties": {
@@ -128,6 +278,26 @@
       "required": [
         "appId"
       ]
+    },
+    "outputSchema": {
+      "type": "object",
+      "description": "Result envelope: ok=true with data on success, ok=false with error on failure.",
+      "properties": {
+        "ok": {
+          "type": "boolean",
+          "description": "Whether the call succeeded."
+        },
+        "data": {
+          "description": "Recent container log lines for the app."
+        },
+        "error": {
+          "type": "string",
+          "description": "Error message when ok is false (e.g. missing/invalid VIBEKIT_API_KEY, or an API error)."
+        }
+      },
+      "required": [
+        "ok"
+      ]
     }
   },
   {
@@ -135,7 +305,12 @@
     "name": "vibekit_restart_app",
     "title": "VibeKit Restart App",
     "description": "Restart a hosted app's container. Use when an app is wedged, or to apply changed environment variables.",
-    "annotations": { "title": "VibeKit Restart App", "readOnlyHint": false, "destructiveHint": false, "idempotentHint": true },
+    "annotations": {
+      "title": "VibeKit Restart App",
+      "readOnlyHint": false,
+      "destructiveHint": false,
+      "idempotentHint": true
+    },
     "inputSchema": {
       "type": "object",
       "properties": {
@@ -146,6 +321,26 @@
       },
       "required": [
         "appId"
+      ]
+    },
+    "outputSchema": {
+      "type": "object",
+      "description": "Result envelope: ok=true with data on success, ok=false with error on failure.",
+      "properties": {
+        "ok": {
+          "type": "boolean",
+          "description": "Whether the call succeeded."
+        },
+        "data": {
+          "description": "Restart confirmation and resulting container status."
+        },
+        "error": {
+          "type": "string",
+          "description": "Error message when ok is false (e.g. missing/invalid VIBEKIT_API_KEY, or an API error)."
+        }
+      },
+      "required": [
+        "ok"
       ]
     }
   },
@@ -154,7 +349,12 @@
     "name": "vibekit_stop_app",
     "title": "VibeKit Stop App",
     "description": "Stop a hosted app's container. The app stays in your account and can be brought back with vibekit_start_app. Use to take an app offline without deleting it.",
-    "annotations": { "title": "VibeKit Stop App", "readOnlyHint": false, "destructiveHint": false, "idempotentHint": true },
+    "annotations": {
+      "title": "VibeKit Stop App",
+      "readOnlyHint": false,
+      "destructiveHint": false,
+      "idempotentHint": true
+    },
     "inputSchema": {
       "type": "object",
       "properties": {
@@ -165,6 +365,26 @@
       },
       "required": [
         "appId"
+      ]
+    },
+    "outputSchema": {
+      "type": "object",
+      "description": "Result envelope: ok=true with data on success, ok=false with error on failure.",
+      "properties": {
+        "ok": {
+          "type": "boolean",
+          "description": "Whether the call succeeded."
+        },
+        "data": {
+          "description": "Stop confirmation; the app is retained but the container is freed."
+        },
+        "error": {
+          "type": "string",
+          "description": "Error message when ok is false (e.g. missing/invalid VIBEKIT_API_KEY, or an API error)."
+        }
+      },
+      "required": [
+        "ok"
       ]
     }
   },
@@ -173,7 +393,12 @@
     "name": "vibekit_start_app",
     "title": "VibeKit Start App",
     "description": "Start a stopped hosted app's container. Use to bring an app stopped via vibekit_stop_app back online.",
-    "annotations": { "title": "VibeKit Start App", "readOnlyHint": false, "destructiveHint": false, "idempotentHint": true },
+    "annotations": {
+      "title": "VibeKit Start App",
+      "readOnlyHint": false,
+      "destructiveHint": false,
+      "idempotentHint": true
+    },
     "inputSchema": {
       "type": "object",
       "properties": {
@@ -184,6 +409,26 @@
       },
       "required": [
         "appId"
+      ]
+    },
+    "outputSchema": {
+      "type": "object",
+      "description": "Result envelope: ok=true with data on success, ok=false with error on failure.",
+      "properties": {
+        "ok": {
+          "type": "boolean",
+          "description": "Whether the call succeeded."
+        },
+        "data": {
+          "description": "Start confirmation and resulting container status."
+        },
+        "error": {
+          "type": "string",
+          "description": "Error message when ok is false (e.g. missing/invalid VIBEKIT_API_KEY, or an API error)."
+        }
+      },
+      "required": [
+        "ok"
       ]
     }
   },
@@ -192,7 +437,11 @@
     "name": "vibekit_app_env",
     "title": "VibeKit Get Env Vars",
     "description": "Get the environment variables configured for an app (names and values). Read-only — use vibekit_set_env to change them.",
-    "annotations": { "title": "VibeKit Get Env Vars", "readOnlyHint": true, "idempotentHint": true },
+    "annotations": {
+      "title": "VibeKit Get Env Vars",
+      "readOnlyHint": true,
+      "idempotentHint": true
+    },
     "inputSchema": {
       "type": "object",
       "properties": {
@@ -204,6 +453,26 @@
       "required": [
         "appId"
       ]
+    },
+    "outputSchema": {
+      "type": "object",
+      "description": "Result envelope: ok=true with data on success, ok=false with error on failure.",
+      "properties": {
+        "ok": {
+          "type": "boolean",
+          "description": "Whether the call succeeded."
+        },
+        "data": {
+          "description": "The app's environment variables as key-value pairs."
+        },
+        "error": {
+          "type": "string",
+          "description": "Error message when ok is false (e.g. missing/invalid VIBEKIT_API_KEY, or an API error)."
+        }
+      },
+      "required": [
+        "ok"
+      ]
     }
   },
   {
@@ -211,7 +480,12 @@
     "name": "vibekit_set_env",
     "title": "VibeKit Set Env Vars",
     "description": "Set or update environment variables for an app (merges with existing). The app must be restarted or redeployed for changes to take effect.",
-    "annotations": { "title": "VibeKit Set Env Vars", "readOnlyHint": false, "destructiveHint": false, "idempotentHint": true },
+    "annotations": {
+      "title": "VibeKit Set Env Vars",
+      "readOnlyHint": false,
+      "destructiveHint": false,
+      "idempotentHint": true
+    },
     "inputSchema": {
       "type": "object",
       "properties": {
@@ -228,6 +502,26 @@
         "appId",
         "vars"
       ]
+    },
+    "outputSchema": {
+      "type": "object",
+      "description": "Result envelope: ok=true with data on success, ok=false with error on failure.",
+      "properties": {
+        "ok": {
+          "type": "boolean",
+          "description": "Whether the call succeeded."
+        },
+        "data": {
+          "description": "Confirmation of the updated environment variables."
+        },
+        "error": {
+          "type": "string",
+          "description": "Error message when ok is false (e.g. missing/invalid VIBEKIT_API_KEY, or an API error)."
+        }
+      },
+      "required": [
+        "ok"
+      ]
     }
   },
   {
@@ -235,7 +529,12 @@
     "name": "vibekit_delete_app",
     "title": "VibeKit Delete App",
     "description": "Permanently delete a hosted app — stops the container and removes its workspace, database, env vars, and subdomain. Irreversible (the GitHub repo is NOT touched). Confirm with the user before calling.",
-    "annotations": { "title": "VibeKit Delete App", "readOnlyHint": false, "destructiveHint": true, "idempotentHint": true },
+    "annotations": {
+      "title": "VibeKit Delete App",
+      "readOnlyHint": false,
+      "destructiveHint": true,
+      "idempotentHint": true
+    },
     "inputSchema": {
       "type": "object",
       "properties": {
@@ -247,6 +546,26 @@
       "required": [
         "appId"
       ]
+    },
+    "outputSchema": {
+      "type": "object",
+      "description": "Result envelope: ok=true with data on success, ok=false with error on failure.",
+      "properties": {
+        "ok": {
+          "type": "boolean",
+          "description": "Whether the call succeeded."
+        },
+        "data": {
+          "description": "Deletion confirmation for the app, its container, and its agent."
+        },
+        "error": {
+          "type": "string",
+          "description": "Error message when ok is false (e.g. missing/invalid VIBEKIT_API_KEY, or an API error)."
+        }
+      },
+      "required": [
+        "ok"
+      ]
     }
   },
   {
@@ -254,7 +573,12 @@
     "name": "vibekit_chat",
     "title": "VibeKit Chat with Agent",
     "description": "Send a message to an app's built-in AI coding agent, which reads, writes, and modifies the app's code and redeploys it. Use for 'build/make a change to my app' requests. If the agent finishes quickly you get its reply directly. Otherwise you get status:'working' — do NOT resend; instead give the user LIVE progress: poll vibekit_agent_status every few seconds and relay the current step from activity.status ('editing the homepage…', 'deploying…') until activity.done, then read vibekit_agent_history for the final reply.",
-    "annotations": { "title": "VibeKit Chat with Agent", "readOnlyHint": false, "destructiveHint": false, "openWorldHint": true },
+    "annotations": {
+      "title": "VibeKit Chat with Agent",
+      "readOnlyHint": false,
+      "destructiveHint": false,
+      "openWorldHint": true
+    },
     "inputSchema": {
       "type": "object",
       "properties": {
@@ -271,6 +595,26 @@
         "appId",
         "message"
       ]
+    },
+    "outputSchema": {
+      "type": "object",
+      "description": "Result envelope: ok=true with data on success, ok=false with error on failure.",
+      "properties": {
+        "ok": {
+          "type": "boolean",
+          "description": "Whether the call succeeded."
+        },
+        "data": {
+          "description": "The agent's reply and remaining credit balance, or a status:'working' note with polling instructions when the coding turn is still running."
+        },
+        "error": {
+          "type": "string",
+          "description": "Error message when ok is false (e.g. missing/invalid VIBEKIT_API_KEY, or an API error)."
+        }
+      },
+      "required": [
+        "ok"
+      ]
     }
   },
   {
@@ -278,7 +622,10 @@
     "name": "vibekit_agent_status",
     "title": "VibeKit Agent Status",
     "description": "Check whether an app's AI agent is idle or working, and get its LIVE progress. Returns activity.status = the current human-readable build step (e.g. 'editing index.html', 'deploying'), activity.steps = the steps so far, and activity.done = whether the turn finished. Poll this every few seconds while a build is running and relay activity.status to the user so they see progress. Once activity.done is true the response also includes liveCheck = a server-side fetch of the deployed page ({ url, ok, httpStatus, title }); use it to confirm the app is live and renders — do NOT curl/fetch the URL yourself, your sandbox may block it.",
-    "annotations": { "title": "VibeKit Agent Status", "readOnlyHint": true },
+    "annotations": {
+      "title": "VibeKit Agent Status",
+      "readOnlyHint": true
+    },
     "inputSchema": {
       "type": "object",
       "properties": {
@@ -290,6 +637,26 @@
       "required": [
         "appId"
       ]
+    },
+    "outputSchema": {
+      "type": "object",
+      "description": "Result envelope: ok=true with data on success, ok=false with error on failure.",
+      "properties": {
+        "ok": {
+          "type": "boolean",
+          "description": "Whether the call succeeded."
+        },
+        "data": {
+          "description": "Agent status: idle/working, current model, context usage, and app info."
+        },
+        "error": {
+          "type": "string",
+          "description": "Error message when ok is false (e.g. missing/invalid VIBEKIT_API_KEY, or an API error)."
+        }
+      },
+      "required": [
+        "ok"
+      ]
     }
   },
   {
@@ -297,7 +664,10 @@
     "name": "vibekit_agent_history",
     "title": "VibeKit Agent History",
     "description": "Get the recent chat history between the user and an app's AI agent.",
-    "annotations": { "title": "VibeKit Agent History", "readOnlyHint": true },
+    "annotations": {
+      "title": "VibeKit Agent History",
+      "readOnlyHint": true
+    },
     "inputSchema": {
       "type": "object",
       "properties": {
@@ -313,6 +683,26 @@
       "required": [
         "appId"
       ]
+    },
+    "outputSchema": {
+      "type": "object",
+      "description": "Result envelope: ok=true with data on success, ok=false with error on failure.",
+      "properties": {
+        "ok": {
+          "type": "boolean",
+          "description": "Whether the call succeeded."
+        },
+        "data": {
+          "description": "Array of recent chat messages between the user and the app's agent."
+        },
+        "error": {
+          "type": "string",
+          "description": "Error message when ok is false (e.g. missing/invalid VIBEKIT_API_KEY, or an API error)."
+        }
+      },
+      "required": [
+        "ok"
+      ]
     }
   },
   {
@@ -320,7 +710,12 @@
     "name": "vibekit_enable_database",
     "title": "VibeKit Enable Database",
     "description": "Provision a Postgres database for an app (idempotent — safe if already enabled). Required before the vibekit_db_* tools work. Note: free-tier apps need the $3/mo Database add-on.",
-    "annotations": { "title": "VibeKit Enable Database", "readOnlyHint": false, "destructiveHint": false, "idempotentHint": true },
+    "annotations": {
+      "title": "VibeKit Enable Database",
+      "readOnlyHint": false,
+      "destructiveHint": false,
+      "idempotentHint": true
+    },
     "inputSchema": {
       "type": "object",
       "properties": {
@@ -331,6 +726,26 @@
       },
       "required": [
         "appId"
+      ]
+    },
+    "outputSchema": {
+      "type": "object",
+      "description": "Result envelope: ok=true with data on success, ok=false with error on failure.",
+      "properties": {
+        "ok": {
+          "type": "boolean",
+          "description": "Whether the call succeeded."
+        },
+        "data": {
+          "description": "Database provisioning result including the assigned schema name; DATABASE_URL is injected on next deploy."
+        },
+        "error": {
+          "type": "string",
+          "description": "Error message when ok is false (e.g. missing/invalid VIBEKIT_API_KEY, or an API error)."
+        }
+      },
+      "required": [
+        "ok"
       ]
     }
   },
@@ -339,7 +754,11 @@
     "name": "vibekit_database_status",
     "title": "VibeKit Database Status",
     "description": "Get an app's database status and connection info (whether it's provisioned, frozen, etc.).",
-    "annotations": { "title": "VibeKit Database Status", "readOnlyHint": true, "idempotentHint": true },
+    "annotations": {
+      "title": "VibeKit Database Status",
+      "readOnlyHint": true,
+      "idempotentHint": true
+    },
     "inputSchema": {
       "type": "object",
       "properties": {
@@ -350,6 +769,26 @@
       },
       "required": [
         "appId"
+      ]
+    },
+    "outputSchema": {
+      "type": "object",
+      "description": "Result envelope: ok=true with data on success, ok=false with error on failure.",
+      "properties": {
+        "ok": {
+          "type": "boolean",
+          "description": "Whether the call succeeded."
+        },
+        "data": {
+          "description": "Database stats: tables, storage, and connection info."
+        },
+        "error": {
+          "type": "string",
+          "description": "Error message when ok is false (e.g. missing/invalid VIBEKIT_API_KEY, or an API error)."
+        }
+      },
+      "required": [
+        "ok"
       ]
     }
   },
@@ -358,7 +797,11 @@
     "name": "vibekit_db_schema",
     "title": "VibeKit Database Schema",
     "description": "Get an app's database schema — every table and its columns. Always call this before writing a query with vibekit_db_query.",
-    "annotations": { "title": "VibeKit Database Schema", "readOnlyHint": true, "idempotentHint": true },
+    "annotations": {
+      "title": "VibeKit Database Schema",
+      "readOnlyHint": true,
+      "idempotentHint": true
+    },
     "inputSchema": {
       "type": "object",
       "properties": {
@@ -370,6 +813,26 @@
       "required": [
         "appId"
       ]
+    },
+    "outputSchema": {
+      "type": "object",
+      "description": "Result envelope: ok=true with data on success, ok=false with error on failure.",
+      "properties": {
+        "ok": {
+          "type": "boolean",
+          "description": "Whether the call succeeded."
+        },
+        "data": {
+          "description": "Full database schema: tables, columns, and types."
+        },
+        "error": {
+          "type": "string",
+          "description": "Error message when ok is false (e.g. missing/invalid VIBEKIT_API_KEY, or an API error)."
+        }
+      },
+      "required": [
+        "ok"
+      ]
     }
   },
   {
@@ -377,7 +840,11 @@
     "name": "vibekit_db_query",
     "title": "VibeKit Run SQL Query",
     "description": "Run a read-only SQL query against an app's Postgres database and return up to 200 result rows. SELECT only — writes and DDL (INSERT/UPDATE/DELETE/ALTER/DROP/…) are rejected server-side; use vibekit_chat or vibekit_submit_task to have the agent make data or schema changes. Call vibekit_db_schema first to learn the tables. SQL string, max 5000 chars.",
-    "annotations": { "title": "VibeKit Run SQL Query", "readOnlyHint": true, "idempotentHint": true },
+    "annotations": {
+      "title": "VibeKit Run SQL Query",
+      "readOnlyHint": true,
+      "idempotentHint": true
+    },
     "inputSchema": {
       "type": "object",
       "properties": {
@@ -394,6 +861,26 @@
         "appId",
         "sql"
       ]
+    },
+    "outputSchema": {
+      "type": "object",
+      "description": "Result envelope: ok=true with data on success, ok=false with error on failure.",
+      "properties": {
+        "ok": {
+          "type": "boolean",
+          "description": "Whether the call succeeded."
+        },
+        "data": {
+          "description": "Query result rows."
+        },
+        "error": {
+          "type": "string",
+          "description": "Error message when ok is false (e.g. missing/invalid VIBEKIT_API_KEY, or an API error)."
+        }
+      },
+      "required": [
+        "ok"
+      ]
     }
   },
   {
@@ -401,7 +888,11 @@
     "name": "vibekit_db_table",
     "title": "VibeKit Browse Table",
     "description": "Browse rows of one table with pagination and optional sorting — a quick read-only alternative to hand-writing a SELECT.",
-    "annotations": { "title": "VibeKit Browse Table", "readOnlyHint": true, "idempotentHint": true },
+    "annotations": {
+      "title": "VibeKit Browse Table",
+      "readOnlyHint": true,
+      "idempotentHint": true
+    },
     "inputSchema": {
       "type": "object",
       "properties": {
@@ -426,6 +917,26 @@
         "appId",
         "table"
       ]
+    },
+    "outputSchema": {
+      "type": "object",
+      "description": "Result envelope: ok=true with data on success, ok=false with error on failure.",
+      "properties": {
+        "ok": {
+          "type": "boolean",
+          "description": "Whether the call succeeded."
+        },
+        "data": {
+          "description": "Rows from the requested table with pagination applied."
+        },
+        "error": {
+          "type": "string",
+          "description": "Error message when ok is false (e.g. missing/invalid VIBEKIT_API_KEY, or an API error)."
+        }
+      },
+      "required": [
+        "ok"
+      ]
     }
   },
   {
@@ -433,7 +944,11 @@
     "name": "vibekit_list_deploys",
     "title": "VibeKit List Deploys",
     "description": "List an app's recent deploys, newest first, with status and commit info. Find a deployId here to pass to vibekit_rollback_deploy.",
-    "annotations": { "title": "VibeKit List Deploys", "readOnlyHint": true, "idempotentHint": true },
+    "annotations": {
+      "title": "VibeKit List Deploys",
+      "readOnlyHint": true,
+      "idempotentHint": true
+    },
     "inputSchema": {
       "type": "object",
       "properties": {
@@ -449,6 +964,26 @@
       "required": [
         "appId"
       ]
+    },
+    "outputSchema": {
+      "type": "object",
+      "description": "Result envelope: ok=true with data on success, ok=false with error on failure.",
+      "properties": {
+        "ok": {
+          "type": "boolean",
+          "description": "Whether the call succeeded."
+        },
+        "data": {
+          "description": "Array of past deploys with timestamps and commit info."
+        },
+        "error": {
+          "type": "string",
+          "description": "Error message when ok is false (e.g. missing/invalid VIBEKIT_API_KEY, or an API error)."
+        }
+      },
+      "required": [
+        "ok"
+      ]
     }
   },
   {
@@ -456,7 +991,12 @@
     "name": "vibekit_rollback_deploy",
     "title": "VibeKit Rollback Deploy",
     "description": "Roll an app back to a previous deploy (get the deployId from vibekit_list_deploys). The container restarts on the rolled-back build; reversible by rolling forward again.",
-    "annotations": { "title": "VibeKit Rollback Deploy", "readOnlyHint": false, "destructiveHint": false, "idempotentHint": true },
+    "annotations": {
+      "title": "VibeKit Rollback Deploy",
+      "readOnlyHint": false,
+      "destructiveHint": false,
+      "idempotentHint": true
+    },
     "inputSchema": {
       "type": "object",
       "properties": {
@@ -473,6 +1013,26 @@
         "appId",
         "deployId"
       ]
+    },
+    "outputSchema": {
+      "type": "object",
+      "description": "Result envelope: ok=true with data on success, ok=false with error on failure.",
+      "properties": {
+        "ok": {
+          "type": "boolean",
+          "description": "Whether the call succeeded."
+        },
+        "data": {
+          "description": "Rollback confirmation for the selected deploy snapshot."
+        },
+        "error": {
+          "type": "string",
+          "description": "Error message when ok is false (e.g. missing/invalid VIBEKIT_API_KEY, or an API error)."
+        }
+      },
+      "required": [
+        "ok"
+      ]
     }
   },
   {
@@ -480,7 +1040,11 @@
     "name": "vibekit_run_qa",
     "title": "VibeKit Run QA",
     "description": "Kick off an automated QA run (headless-browser checks) against a hosted app. Poll vibekit_qa_status for results.",
-    "annotations": { "title": "VibeKit Run QA", "readOnlyHint": false, "destructiveHint": false },
+    "annotations": {
+      "title": "VibeKit Run QA",
+      "readOnlyHint": false,
+      "destructiveHint": false
+    },
     "inputSchema": {
       "type": "object",
       "properties": {
@@ -491,6 +1055,26 @@
       },
       "required": [
         "appId"
+      ]
+    },
+    "outputSchema": {
+      "type": "object",
+      "description": "Result envelope: ok=true with data on success, ok=false with error on failure.",
+      "properties": {
+        "ok": {
+          "type": "boolean",
+          "description": "Whether the call succeeded."
+        },
+        "data": {
+          "description": "QA run start confirmation with run id/status."
+        },
+        "error": {
+          "type": "string",
+          "description": "Error message when ok is false (e.g. missing/invalid VIBEKIT_API_KEY, or an API error)."
+        }
+      },
+      "required": [
+        "ok"
       ]
     }
   },
@@ -499,7 +1083,10 @@
     "name": "vibekit_qa_status",
     "title": "VibeKit QA Status",
     "description": "Get the latest automated QA results and status for an app.",
-    "annotations": { "title": "VibeKit QA Status", "readOnlyHint": true },
+    "annotations": {
+      "title": "VibeKit QA Status",
+      "readOnlyHint": true
+    },
     "inputSchema": {
       "type": "object",
       "properties": {
@@ -511,6 +1098,26 @@
       "required": [
         "appId"
       ]
+    },
+    "outputSchema": {
+      "type": "object",
+      "description": "Result envelope: ok=true with data on success, ok=false with error on failure.",
+      "properties": {
+        "ok": {
+          "type": "boolean",
+          "description": "Whether the call succeeded."
+        },
+        "data": {
+          "description": "Latest QA run status and results summary."
+        },
+        "error": {
+          "type": "string",
+          "description": "Error message when ok is false (e.g. missing/invalid VIBEKIT_API_KEY, or an API error)."
+        }
+      },
+      "required": [
+        "ok"
+      ]
     }
   },
   {
@@ -518,7 +1125,12 @@
     "name": "vibekit_submit_task",
     "title": "VibeKit Submit Task",
     "description": "Submit an autonomous coding task. The AI writes the code, commits to GitHub, and (by default) deploys to <subdomain>.vibekit.bot. Returns a taskId — poll vibekit_get_task or block with vibekit_wait_for_task. Use for 'build X' or 'change X' work against a repo.",
-    "annotations": { "title": "VibeKit Submit Task", "readOnlyHint": false, "destructiveHint": false, "openWorldHint": true },
+    "annotations": {
+      "title": "VibeKit Submit Task",
+      "readOnlyHint": false,
+      "destructiveHint": false,
+      "openWorldHint": true
+    },
     "inputSchema": {
       "type": "object",
       "properties": {
@@ -546,6 +1158,26 @@
       "required": [
         "task"
       ]
+    },
+    "outputSchema": {
+      "type": "object",
+      "description": "Result envelope: ok=true with data on success, ok=false with error on failure.",
+      "properties": {
+        "ok": {
+          "type": "boolean",
+          "description": "Whether the call succeeded."
+        },
+        "data": {
+          "description": "The created task: taskId and initial status."
+        },
+        "error": {
+          "type": "string",
+          "description": "Error message when ok is false (e.g. missing/invalid VIBEKIT_API_KEY, or an API error)."
+        }
+      },
+      "required": [
+        "ok"
+      ]
     }
   },
   {
@@ -553,7 +1185,10 @@
     "name": "vibekit_get_task",
     "title": "VibeKit Get Task",
     "description": "Get the status and result of a task submitted via vibekit_submit_task.",
-    "annotations": { "title": "VibeKit Get Task", "readOnlyHint": true },
+    "annotations": {
+      "title": "VibeKit Get Task",
+      "readOnlyHint": true
+    },
     "inputSchema": {
       "type": "object",
       "properties": {
@@ -565,6 +1200,26 @@
       "required": [
         "taskId"
       ]
+    },
+    "outputSchema": {
+      "type": "object",
+      "description": "Result envelope: ok=true with data on success, ok=false with error on failure.",
+      "properties": {
+        "ok": {
+          "type": "boolean",
+          "description": "Whether the call succeeded."
+        },
+        "data": {
+          "description": "Task details: status, logs/result summary, and repo info."
+        },
+        "error": {
+          "type": "string",
+          "description": "Error message when ok is false (e.g. missing/invalid VIBEKIT_API_KEY, or an API error)."
+        }
+      },
+      "required": [
+        "ok"
+      ]
     }
   },
   {
@@ -572,7 +1227,11 @@
     "name": "vibekit_list_tasks",
     "title": "VibeKit List Tasks",
     "description": "List recent coding tasks, optionally filtered by status.",
-    "annotations": { "title": "VibeKit List Tasks", "readOnlyHint": true, "idempotentHint": true },
+    "annotations": {
+      "title": "VibeKit List Tasks",
+      "readOnlyHint": true,
+      "idempotentHint": true
+    },
     "inputSchema": {
       "type": "object",
       "properties": {
@@ -591,6 +1250,26 @@
           "description": "Filter by task status"
         }
       }
+    },
+    "outputSchema": {
+      "type": "object",
+      "description": "Result envelope: ok=true with data on success, ok=false with error on failure.",
+      "properties": {
+        "ok": {
+          "type": "boolean",
+          "description": "Whether the call succeeded."
+        },
+        "data": {
+          "description": "Array of tasks with id and status."
+        },
+        "error": {
+          "type": "string",
+          "description": "Error message when ok is false (e.g. missing/invalid VIBEKIT_API_KEY, or an API error)."
+        }
+      },
+      "required": [
+        "ok"
+      ]
     }
   },
   {
@@ -598,7 +1277,10 @@
     "name": "vibekit_wait_for_task",
     "title": "VibeKit Wait for Task",
     "description": "Block until a submitted task finishes (or the timeout), polling every 5 seconds, then return its result. Use right after vibekit_submit_task when you want the final result inline.",
-    "annotations": { "title": "VibeKit Wait for Task", "readOnlyHint": true },
+    "annotations": {
+      "title": "VibeKit Wait for Task",
+      "readOnlyHint": true
+    },
     "inputSchema": {
       "type": "object",
       "properties": {
@@ -614,6 +1296,26 @@
       "required": [
         "taskId"
       ]
+    },
+    "outputSchema": {
+      "type": "object",
+      "description": "Result envelope: ok=true with data on success, ok=false with error on failure.",
+      "properties": {
+        "ok": {
+          "type": "boolean",
+          "description": "Whether the call succeeded."
+        },
+        "data": {
+          "description": "Final task state after polling: completed or failed, with result details."
+        },
+        "error": {
+          "type": "string",
+          "description": "Error message when ok is false (e.g. missing/invalid VIBEKIT_API_KEY, or an API error)."
+        }
+      },
+      "required": [
+        "ok"
+      ]
     }
   },
   {
@@ -621,7 +1323,12 @@
     "name": "vibekit_cancel_task",
     "title": "VibeKit Cancel Task",
     "description": "Cancel a running task by taskId. No-op if it has already finished.",
-    "annotations": { "title": "VibeKit Cancel Task", "readOnlyHint": false, "destructiveHint": false, "idempotentHint": true },
+    "annotations": {
+      "title": "VibeKit Cancel Task",
+      "readOnlyHint": false,
+      "destructiveHint": false,
+      "idempotentHint": true
+    },
     "inputSchema": {
       "type": "object",
       "properties": {
@@ -633,6 +1340,26 @@
       "required": [
         "taskId"
       ]
+    },
+    "outputSchema": {
+      "type": "object",
+      "description": "Result envelope: ok=true with data on success, ok=false with error on failure.",
+      "properties": {
+        "ok": {
+          "type": "boolean",
+          "description": "Whether the call succeeded."
+        },
+        "data": {
+          "description": "Cancellation confirmation for the task."
+        },
+        "error": {
+          "type": "string",
+          "description": "Error message when ok is false (e.g. missing/invalid VIBEKIT_API_KEY, or an API error)."
+        }
+      },
+      "required": [
+        "ok"
+      ]
     }
   },
   {
@@ -640,7 +1367,12 @@
     "name": "vibekit_create_schedule",
     "title": "VibeKit Create Schedule",
     "description": "Create a recurring coding task that the AI runs automatically on a cron schedule (e.g. a weekly SEO pass). Use for 'every Monday, do X to my repo' requests.",
-    "annotations": { "title": "VibeKit Create Schedule", "readOnlyHint": false, "destructiveHint": false, "idempotentHint": false },
+    "annotations": {
+      "title": "VibeKit Create Schedule",
+      "readOnlyHint": false,
+      "destructiveHint": false,
+      "idempotentHint": false
+    },
     "inputSchema": {
       "type": "object",
       "properties": {
@@ -666,6 +1398,26 @@
         "repo",
         "cron"
       ]
+    },
+    "outputSchema": {
+      "type": "object",
+      "description": "Result envelope: ok=true with data on success, ok=false with error on failure.",
+      "properties": {
+        "ok": {
+          "type": "boolean",
+          "description": "Whether the call succeeded."
+        },
+        "data": {
+          "description": "The created schedule: id, name, and cron expression."
+        },
+        "error": {
+          "type": "string",
+          "description": "Error message when ok is false (e.g. missing/invalid VIBEKIT_API_KEY, or an API error)."
+        }
+      },
+      "required": [
+        "ok"
+      ]
     }
   },
   {
@@ -673,10 +1425,34 @@
     "name": "vibekit_list_schedules",
     "title": "VibeKit List Schedules",
     "description": "List all of the account's scheduled recurring tasks.",
-    "annotations": { "title": "VibeKit List Schedules", "readOnlyHint": true, "idempotentHint": true },
+    "annotations": {
+      "title": "VibeKit List Schedules",
+      "readOnlyHint": true,
+      "idempotentHint": true
+    },
     "inputSchema": {
       "type": "object",
       "properties": {}
+    },
+    "outputSchema": {
+      "type": "object",
+      "description": "Result envelope: ok=true with data on success, ok=false with error on failure.",
+      "properties": {
+        "ok": {
+          "type": "boolean",
+          "description": "Whether the call succeeded."
+        },
+        "data": {
+          "description": "Array of scheduled tasks with id, name, and cron expression."
+        },
+        "error": {
+          "type": "string",
+          "description": "Error message when ok is false (e.g. missing/invalid VIBEKIT_API_KEY, or an API error)."
+        }
+      },
+      "required": [
+        "ok"
+      ]
     }
   },
   {
@@ -684,7 +1460,12 @@
     "name": "vibekit_delete_schedule",
     "title": "VibeKit Delete Schedule",
     "description": "Delete a scheduled recurring task by scheduleId. Confirm with the user first.",
-    "annotations": { "title": "VibeKit Delete Schedule", "readOnlyHint": false, "destructiveHint": true, "idempotentHint": true },
+    "annotations": {
+      "title": "VibeKit Delete Schedule",
+      "readOnlyHint": false,
+      "destructiveHint": true,
+      "idempotentHint": true
+    },
     "inputSchema": {
       "type": "object",
       "properties": {
@@ -696,6 +1477,26 @@
       "required": [
         "scheduleId"
       ]
+    },
+    "outputSchema": {
+      "type": "object",
+      "description": "Result envelope: ok=true with data on success, ok=false with error on failure.",
+      "properties": {
+        "ok": {
+          "type": "boolean",
+          "description": "Whether the call succeeded."
+        },
+        "data": {
+          "description": "Deletion confirmation for the schedule."
+        },
+        "error": {
+          "type": "string",
+          "description": "Error message when ok is false (e.g. missing/invalid VIBEKIT_API_KEY, or an API error)."
+        }
+      },
+      "required": [
+        "ok"
+      ]
     }
   },
   {
@@ -703,10 +1504,34 @@
     "name": "vibekit_account",
     "title": "VibeKit Account Info",
     "description": "Get VibeKit account info: plan, credit balance, and usage.",
-    "annotations": { "title": "VibeKit Account Info", "readOnlyHint": true, "idempotentHint": true },
+    "annotations": {
+      "title": "VibeKit Account Info",
+      "readOnlyHint": true,
+      "idempotentHint": true
+    },
     "inputSchema": {
       "type": "object",
       "properties": {}
+    },
+    "outputSchema": {
+      "type": "object",
+      "description": "Result envelope: ok=true with data on success, ok=false with error on failure.",
+      "properties": {
+        "ok": {
+          "type": "boolean",
+          "description": "Whether the call succeeded."
+        },
+        "data": {
+          "description": "Account info: plan, credits, usage, and API key status."
+        },
+        "error": {
+          "type": "string",
+          "description": "Error message when ok is false (e.g. missing/invalid VIBEKIT_API_KEY, or an API error)."
+        }
+      },
+      "required": [
+        "ok"
+      ]
     }
   },
   {
@@ -714,7 +1539,11 @@
     "name": "vibekit_list_skills",
     "title": "VibeKit List Skills",
     "description": "List available implementation skills (IDs, names, descriptions, tags) from the VibeKit skills registry. Discover skills here before fetching one with vibekit_get_skill.",
-    "annotations": { "title": "VibeKit List Skills", "readOnlyHint": true, "openWorldHint": true },
+    "annotations": {
+      "title": "VibeKit List Skills",
+      "readOnlyHint": true,
+      "openWorldHint": true
+    },
     "inputSchema": {
       "type": "object",
       "properties": {
@@ -723,6 +1552,26 @@
           "description": "Filter skills by tag (e.g. 'react', 'database', 'security')"
         }
       }
+    },
+    "outputSchema": {
+      "type": "object",
+      "description": "Result envelope: ok=true with data on success, ok=false with error on failure.",
+      "properties": {
+        "ok": {
+          "type": "boolean",
+          "description": "Whether the call succeeded."
+        },
+        "data": {
+          "description": "Array of available skills, optionally filtered by tag, each with id, name, and tags."
+        },
+        "error": {
+          "type": "string",
+          "description": "Error message when ok is false (e.g. missing/invalid VIBEKIT_API_KEY, or an API error)."
+        }
+      },
+      "required": [
+        "ok"
+      ]
     }
   },
   {
@@ -730,7 +1579,11 @@
     "name": "vibekit_get_skill",
     "title": "VibeKit Get Skill",
     "description": "Fetch the full content of a specific skill — implementation patterns, code examples, and best practices for a domain. Fetch on-demand when you need guidance on a specific topic.",
-    "annotations": { "title": "VibeKit Get Skill", "readOnlyHint": true, "openWorldHint": true },
+    "annotations": {
+      "title": "VibeKit Get Skill",
+      "readOnlyHint": true,
+      "openWorldHint": true
+    },
     "inputSchema": {
       "type": "object",
       "properties": {
@@ -741,6 +1594,26 @@
       },
       "required": [
         "id"
+      ]
+    },
+    "outputSchema": {
+      "type": "object",
+      "description": "Result envelope: ok=true with data on success, ok=false with error on failure.",
+      "properties": {
+        "ok": {
+          "type": "boolean",
+          "description": "Whether the call succeeded."
+        },
+        "data": {
+          "description": "The skill's id and full SKILL.md content."
+        },
+        "error": {
+          "type": "string",
+          "description": "Error message when ok is false (e.g. missing/invalid VIBEKIT_API_KEY, or an API error)."
+        }
+      },
+      "required": [
+        "ok"
       ]
     }
   }

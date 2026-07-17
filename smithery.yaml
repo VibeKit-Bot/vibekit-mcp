@@ -8,13 +8,11 @@ startCommand:
   type: stdio
   configSchema:
     type: object
-    required:
-      - vibekitApiKey
     properties:
       vibekitApiKey:
         type: string
         title: VibeKit API Key
-        description: "Your VibeKit API key (starts with vk_). Get one from the Telegram bot @the_vibe_kit_bot with the /apikey command."
+        description: "Optional to connect and browse tools — the server boots and serves tools/list without it. Required only when actually calling the VibeKit API. Starts with vk_; get one from the Telegram bot @the_vibe_kit_bot with the /apikey command, or POST https://vibekit.bot/api/v1/auth/register."
       vibekitApiUrl:
         type: string
         title: API base URL
@@ -25,7 +23,7 @@ startCommand:
       command: 'npx',
       args: ['-y', 'vibekit-mcp'],
       env: {
-        VIBEKIT_API_KEY: config.vibekitApiKey,
+        ...(config.vibekitApiKey ? { VIBEKIT_API_KEY: config.vibekitApiKey } : {}),
         ...(config.vibekitApiUrl ? { VIBEKIT_API_URL: config.vibekitApiUrl } : {})
       }
     })
