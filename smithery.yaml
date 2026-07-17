@@ -1,0 +1,31 @@
+# Smithery configuration: https://smithery.ai/docs/config#smitheryyaml
+#
+# Runs the published npm package over stdio. tools/list is served WITHOUT a key
+# (see src/index.ts — the server boots and lists all 36 tools for introspection;
+# a key is only needed to actually call the VibeKit API), so Smithery can scan
+# every tool's description, parameters, and annotations even with no config set.
+startCommand:
+  type: stdio
+  configSchema:
+    type: object
+    required:
+      - vibekitApiKey
+    properties:
+      vibekitApiKey:
+        type: string
+        title: VibeKit API Key
+        description: "Your VibeKit API key (starts with vk_). Get one from the Telegram bot @the_vibe_kit_bot with the /apikey command."
+      vibekitApiUrl:
+        type: string
+        title: API base URL
+        default: "https://vibekit.bot/api/v1"
+        description: "Optional. Override the VibeKit API base URL (for self-hosting or staging). Leave blank to use the default."
+  commandFunction: |-
+    (config) => ({
+      command: 'npx',
+      args: ['-y', 'vibekit-mcp'],
+      env: {
+        VIBEKIT_API_KEY: config.vibekitApiKey,
+        ...(config.vibekitApiUrl ? { VIBEKIT_API_URL: config.vibekitApiUrl } : {})
+      }
+    })
