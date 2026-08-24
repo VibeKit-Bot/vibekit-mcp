@@ -156,3 +156,20 @@ Once configured, you can use prompts like:
 - [API Documentation](https://vibekit.bot/SKILL.md)
 - [Dashboard](https://app.vibekit.bot) (view or regenerate your API key)
 - [GitHub](https://github.com/VibeKit-Bot/vibekit-mcp)
+
+## Privacy Policy
+
+VibeKit's privacy policy: **https://vibekit.bot/privacy**
+
+What this MCP server does with your data, concretely:
+
+- Every tool call is forwarded to the VibeKit API (`https://vibekit.bot/api/v1`)
+  over HTTPS, authenticated with the API key you configure. Tool inputs and
+  outputs are processed by VibeKit to run your apps and agents, under the
+  privacy policy above.
+- The server itself keeps **no state**: nothing is written to disk, no
+  analytics or telemetry are collected by this package, and your API key is
+  read from configuration (`VIBEKIT_API_KEY` / the extension's key field) and
+  sent only to `vibekit.bot`.
+- Data retention, third-party sharing, and deletion are governed by the
+  policy above. Questions: support@vibekit.bot.
