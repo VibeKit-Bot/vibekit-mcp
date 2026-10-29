@@ -1382,7 +1382,7 @@
         },
         "repo": {
           "type": "string",
-          "description": "GitHub repo as 'owner/repo'"
+          "description": "Repo of one of the user's deployed VibeKit projects, as 'owner/repo' (the repo vibekit_submit_task made). That project's agent runs each time and posts its report in the project chat."
         },
         "cron": {
           "type": "string",
