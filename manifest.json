@@ -3,7 +3,7 @@
   "manifest_version": "0.2",
   "name": "vibekit-mcp",
   "display_name": "VibeKit",
-  "version": "0.8.0",
+  "version": "0.8.1",
   "description": "Build, deploy, and operate hosted web apps on VibeKit from your MCP client.",
   "long_description": "VibeKit hosts and operates AI-built web apps. This extension exposes the full VibeKit surface as MCP tools: create and deploy apps, manage hosting (start/stop/restart, env vars, logs, rollbacks), chat with each app's persistent coding agent, run background coding tasks and QA, query the attached database, and manage schedules \u2014 36 tools in total. Requires a VibeKit API key (vk_...).",
   "author": {
@@ -38,7 +38,7 @@
     },
     {
       "name": "vibekit_create_app",
-      "description": "Create a new hosted app from a starter template and deploy it live at <subdomain>.vibekit.bot. Call vibekit_list_templates first to pick a valid template. To deploy existing code from a GitHub repo instead, use vibekit_deploy."
+      "description": "Create a new hosted app from a starter template and deploy it live at <subdomain>.vibekit.page. Call vibekit_list_templates first to pick a valid template. To deploy existing code from a GitHub repo instead, use vibekit_deploy."
     },
     {
       "name": "vibekit_list_templates",
@@ -46,7 +46,7 @@
     },
     {
       "name": "vibekit_deploy",
-      "description": "Deploy a GitHub repo to VibeKit hosting, live at <subdomain>.vibekit.bot (Fargate container behind nginx, SSL automatic). Use when the code already lives in a GitHub repo; for a starter template instead use vibekit_create_app."
+      "description": "Deploy a GitHub repo to VibeKit hosting, live at <subdomain>.vibekit.page (Fargate container behind nginx, SSL automatic). Use when the code already lives in a GitHub repo; for a starter template instead use vibekit_create_app."
     },
     {
       "name": "vibekit_redeploy",
@@ -130,7 +130,7 @@
     },
     {
       "name": "vibekit_submit_task",
-      "description": "Submit an autonomous coding task. The AI writes the code, commits to GitHub, and (by default) deploys to <subdomain>.vibekit.bot. Returns a taskId \u2014 poll vibekit_get_task or block with vibekit_wait_for_task. Use for 'build X' or 'change X' work against a repo."
+      "description": "Submit an autonomous coding task. The AI writes the code, commits to GitHub, and (by default) deploys to <subdomain>.vibekit.page. Returns a taskId \u2014 poll vibekit_get_task or block with vibekit_wait_for_task. Use for 'build X' or 'change X' work against a repo."
     },
     {
       "name": "vibekit_get_task",
@@ -190,7 +190,7 @@
     "api_key": {
       "type": "string",
       "title": "VibeKit API key",
-      "description": "Your vk_... key. Get one at vibekit.bot (Settings) or instantly via the API \u2014 see the README's Get an API key section.",
+      "description": "Your vk_... key. Copy yours from Profile at app.vibekit.bot, or get one instantly via the API \u2014 see the README's Get an API key section.",
       "sensitive": true,
       "required": true
     }

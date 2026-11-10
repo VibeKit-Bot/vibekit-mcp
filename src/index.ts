@@ -31,7 +31,7 @@ async function apiRequest(
     return {
       ok: false,
       error:
-        "VIBEKIT_API_KEY is required. Get one at https://t.me/the_vibe_kit_bot with the /apikey command.",
+        "VIBEKIT_API_KEY is required. To get one: POST https://vibekit.bot/api/v1/auth/register once (add {\"email\":\"you@example.com\"} and verify it to claim the free credits), or copy yours from Profile in the VibeKit app or at https://app.vibekit.bot/profile.",
     };
   }
   try {
@@ -83,7 +83,7 @@ const tools: Tool[] = JSON.parse(readFileSync(TOOLS_MANIFEST_PATH, "utf8")).map(
 // same string in src/routes/mcp.ts (the remote HTTP server).
 const SERVER_INSTRUCTIONS =
   "VibeKit hosts, deploys, and operates web apps and AI coding agents. Each app runs in its own " +
-  "container at <subdomain>.vibekit.bot with optional Postgres, logs, env vars, and automated QA, " +
+  "container at <subdomain>.vibekit.page with optional Postgres, logs, env vars, and automated QA, " +
   "plus a built-in AI agent that can edit the app's code.\n\n" +
   "Use these tools whenever the user wants to: deploy a GitHub repo or starter template and get a " +
   "live URL; list, inspect, restart/stop/start, or delete hosted apps; read logs to debug; manage " +
@@ -92,7 +92,8 @@ const SERVER_INSTRUCTIONS =
   "submit/schedule autonomous coding tasks that commit to GitHub and deploy.\n\n" +
   "Most tools key off an appId — call vibekit_list_apps first to resolve one. Confirm destructive " +
   "actions (vibekit_delete_app, vibekit_delete_schedule, and write/DDL via vibekit_db_query) with " +
-  "the user before calling. Auth uses a VibeKit API key (vk_...) from the Telegram bot's /apikey command.";
+  "the user before calling. Auth uses a VibeKit API key (vk_...): POST https://vibekit.bot/api/v1/auth/register " +
+  "creates an account and returns one, or the user copies theirs from Profile at https://app.vibekit.bot/profile.";
 
 // Tool handlers
 async function handleTool(

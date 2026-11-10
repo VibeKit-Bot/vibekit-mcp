@@ -81,7 +81,7 @@
     "category": "Hosting & Apps",
     "name": "vibekit_create_app",
     "title": "VibeKit Create App",
-    "description": "Create a new hosted app from a starter template and deploy it live at <subdomain>.vibekit.bot. Call vibekit_list_templates first to pick a valid template. To deploy existing code from a GitHub repo instead, use vibekit_deploy.",
+    "description": "Create a new hosted app from a starter template and deploy it live at <subdomain>.vibekit.page. Call vibekit_list_templates first to pick a valid template. To deploy existing code from a GitHub repo instead, use vibekit_deploy.",
     "annotations": {
       "title": "VibeKit Create App",
       "readOnlyHint": false,
@@ -97,7 +97,7 @@
         },
         "subdomain": {
           "type": "string",
-          "description": "Desired subdomain — the app goes live at <subdomain>.vibekit.bot. Lowercase letters, numbers, and hyphens."
+          "description": "Desired subdomain — the app goes live at <subdomain>.vibekit.page. Lowercase letters, numbers, and hyphens."
         }
       },
       "required": [
@@ -165,7 +165,7 @@
     "category": "Hosting & Apps",
     "name": "vibekit_deploy",
     "title": "VibeKit Deploy",
-    "description": "Deploy a GitHub repo to VibeKit hosting, live at <subdomain>.vibekit.bot (Fargate container behind nginx, SSL automatic). Use when the code already lives in a GitHub repo; for a starter template instead use vibekit_create_app.",
+    "description": "Deploy a GitHub repo to VibeKit hosting, live at <subdomain>.vibekit.page (Fargate container behind nginx, SSL automatic). Use when the code already lives in a GitHub repo; for a starter template instead use vibekit_create_app.",
     "annotations": {
       "title": "VibeKit Deploy",
       "readOnlyHint": false,
@@ -181,7 +181,7 @@
         },
         "subdomain": {
           "type": "string",
-          "description": "Desired subdomain — the app goes live at <subdomain>.vibekit.bot. Lowercase letters, numbers, and hyphens."
+          "description": "Desired subdomain — the app goes live at <subdomain>.vibekit.page. Lowercase letters, numbers, and hyphens."
         }
       },
       "required": [
@@ -198,7 +198,7 @@
           "description": "Whether the call succeeded."
         },
         "data": {
-          "description": "Deploy result: deployUrl (https://<subdomain>.vibekit.bot) and appId."
+          "description": "Deploy result: deployUrl (https://<subdomain>.vibekit.page) and appId."
         },
         "error": {
           "type": "string",
@@ -1124,7 +1124,7 @@
     "category": "Tasks",
     "name": "vibekit_submit_task",
     "title": "VibeKit Submit Task",
-    "description": "Submit an autonomous coding task. The AI writes the code, commits to GitHub, and (by default) deploys to <subdomain>.vibekit.bot. Returns a taskId — poll vibekit_get_task or block with vibekit_wait_for_task. Use for 'build X' or 'change X' work against a repo.",
+    "description": "Submit an autonomous coding task. The AI writes the code, commits to GitHub, and (by default) deploys to <subdomain>.vibekit.page. Returns a taskId — poll vibekit_get_task or block with vibekit_wait_for_task. Use for 'build X' or 'change X' work against a repo.",
     "annotations": {
       "title": "VibeKit Submit Task",
       "readOnlyHint": false,
@@ -1148,7 +1148,7 @@
         },
         "deploy": {
           "type": "boolean",
-          "description": "Auto-deploy to <subdomain>.vibekit.bot when done (default true)"
+          "description": "Auto-deploy to <subdomain>.vibekit.page when done (default true)"
         },
         "callbackUrl": {
           "type": "string",

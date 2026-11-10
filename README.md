@@ -28,7 +28,7 @@ Keys start with `vk_`. Two ways to get one:
   # Response: {"apiKey": "vk_...", "plan": "free", "credits": 0}
   ```
   Save the returned key and reuse it. Each call to `/auth/register` creates a brand-new account, so call it once, not per request.
-- **From your account:** if you already use VibeKit, copy or regenerate your key in the [web dashboard](https://app.vibekit.bot) or the iOS app settings.
+- **From your account:** if you already use VibeKit, copy or regenerate your key on Profile, in the [web dashboard](https://app.vibekit.bot/profile) or the iOS app.
 
 ## Installation
 
