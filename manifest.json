@@ -3,7 +3,7 @@
   "manifest_version": "0.2",
   "name": "vibekit-mcp",
   "display_name": "VibeKit",
-  "version": "0.8.1",
+  "version": "0.8.2",
   "description": "Build, deploy, and operate hosted web apps on VibeKit from your MCP client.",
   "long_description": "VibeKit hosts and operates AI-built web apps. This extension exposes the full VibeKit surface as MCP tools: create and deploy apps, manage hosting (start/stop/restart, env vars, logs, rollbacks), chat with each app's persistent coding agent, run background coding tasks and QA, query the attached database, and manage schedules \u2014 36 tools in total. Requires a VibeKit API key (vk_...).",
   "author": {

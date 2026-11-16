@@ -3,7 +3,7 @@
   "name": "io.github.VibeKit-Bot/vibekit-mcp",
   "title": "VibeKit",
   "description": "Build, deploy, and operate hosted web apps on VibeKit (vibekit.bot) from any MCP client.",
-  "version": "0.8.1",
+  "version": "0.8.2",
   "websiteUrl": "https://vibekit.bot",
   "repository": {
     "url": "https://github.com/VibeKit-Bot/vibekit-mcp",

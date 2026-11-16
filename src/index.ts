@@ -91,8 +91,9 @@ const SERVER_INSTRUCTIONS =
   "or roll back deploys; run or check QA; chat with an app's AI agent to change its code; or " +
   "submit/schedule autonomous coding tasks that commit to GitHub and deploy.\n\n" +
   "Most tools key off an appId — call vibekit_list_apps first to resolve one. Confirm destructive " +
-  "actions (vibekit_delete_app, vibekit_delete_schedule, and write/DDL via vibekit_db_query) with " +
-  "the user before calling. Auth uses a VibeKit API key (vk_...): POST https://vibekit.bot/api/v1/auth/register " +
+  "actions (vibekit_delete_app, vibekit_delete_schedule) with the user before calling. " +
+  "vibekit_db_query only reads (one statement per call); data or schema changes go through the app's " +
+  "agent (vibekit_chat or vibekit_submit_task). Auth uses a VibeKit API key (vk_...): POST https://vibekit.bot/api/v1/auth/register " +
   "creates an account and returns one, or the user copies theirs from Profile at https://app.vibekit.bot/profile.";
 
 // Tool handlers
@@ -271,8 +272,11 @@ async function handleTool(
 
     // Tasks (existing)
     case "vibekit_submit_task":
+      // The tool advertises `task` (public contract) but POST /task reads
+      // `prompt`; sending `task` made every submit fail with MISSING_PROMPT.
+      // Mapped here as the hosted server already does (src/routes/mcp.ts).
       result = await apiRequest("POST", "/task", {
-        task: args.task,
+        prompt: args.task,
         repo: args.repo,
         branch: args.branch,
         deploy: args.deploy ?? true,
